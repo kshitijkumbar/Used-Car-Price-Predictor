@@ -3,8 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
 from sklearn import preprocessing
-from sklearn.model_selection import KFold
-from sklearn.linear_model import LinearRegression
+
 def data_processor(filename):
 	"""
 	Process data from data file
@@ -53,21 +52,6 @@ def data_processor(filename):
 	print((np.shape(data)))
 
 
-
-
-	# plt.plot(data.Mileage.values-np.mean(data.Mileage.values))
-	# plt.show()
-	X = pd.DataFrame(data.drop(['Price'],axis=1))
-	y = pd.DataFrame(data['Price'])
-	# print(X.head)
-	model = LinearRegression()
-	scores = []
-	kfold = KFold(n_splits=3, shuffle=True, random_state=42)
-	for i, (train, test) in enumerate(kfold.split(X, y)):
-		model.fit(X.iloc[train,:], y.iloc[train,:])
-		score = model.score(X.iloc[test,:], y.iloc[test,:])
-		scores.append(score)
-	print(scores)
 	return data
 
 
