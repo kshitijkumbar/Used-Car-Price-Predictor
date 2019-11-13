@@ -31,16 +31,16 @@ def data_processor(filename):
     data['Model'] = data['Model'].str.lower()
     data['Model'] = data['Model'].str.replace(" ","")
     data['Model'] = data['Model'].str.replace("-","")
-    data.hist()
-    plt.show()
+    # data.hist()
+    # plt.show()
     std_dev = 3
     data = data[(np.abs(stats.zscore(data[['Mileage','Price']])) < float(std_dev)).all(axis=1)]
-    data.hist()
-    plt.show()
+    # data.hist()
+    # plt.show()
     # plt.plot(histo)
     # plt.show()
     # print(data[(data.Mileage == 5)])
-    data=data.iloc[0:250000,:]
+    data=data.iloc[0:500000,:]
     print(len(data.Model.unique())+len(data.Make.unique())+len(data.State.unique())+len(data.City.unique()))
     savePath = "CleanData/" + filename.split('/')[1]
     data.to_csv(savePath, encoding='utf-8', index=False)
