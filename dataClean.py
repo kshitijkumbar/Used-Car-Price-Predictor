@@ -37,32 +37,26 @@ def data_processor(filename):
     data = data[(np.abs(stats.zscore(data[['Mileage','Price']])) < float(std_dev)).all(axis=1)]
     data.hist()
     plt.show()
-    # plt.plot(histo)
-    # plt.show()
-    # print(data[(data.Mileage == 5)])
-    data=data.iloc[0:250000,:]
-    print(len(data.Model.unique())+len(data.Make.unique())+len(data.State.unique())+len(data.City.unique()))
+    # Drop City and Vin#
+    data = data.drop(['Vin'],axis=1)
+    data = data.drop(['City'],axis=1)
     savePath = "CleanData/" + filename.split('/')[1]
     data.to_csv(savePath, encoding='utf-8', index=False)
-    
-    print(f"Mean Mileage: {np.mean(data.Mileage.values)}, Max Mileage : {np.max(data.Mileage.values)}, Min Mileage : {np.min(data.Mileage.values)}")
+    print("Done cleanup.")
+    return
+
+
+def generateOneHotDataFrame(filename):
+    data = pd.read_csv(filename)
+    data = data.iloc[0:500000,:]
     data = pd.concat([data,pd.get_dummies(data['State'])],axis=1).drop(['State'],axis=1)
-    data = pd.concat([data,pd.get_dummies(data['City'])],axis=1).drop(['City'],axis=1)
     data = pd.concat([data,pd.get_dummies(data['Make'])],axis=1).drop(['Make'],axis=1)
     data = pd.concat([data,pd.get_dummies(data['Model'])],axis=1).drop(['Model'],axis=1)
-    data = data.drop(['Vin'],axis=1)
-    print((np.shape(data)))
-
-    print("Done cleanup.")
-
     return data
-
-
 
 
 def main():
     data_processor('RawData/true_car_listings.csv')
-    #data_processor('RawData/tc20171021.csv');
 
 if __name__ == '__main__':
     main()
