@@ -47,10 +47,11 @@ def data_processor(filename):
     
     print(f"Mean Mileage: {np.mean(data.Mileage.values)}, Max Mileage : {np.max(data.Mileage.values)}, Min Mileage : {np.min(data.Mileage.values)}")
     data = pd.concat([data,pd.get_dummies(data['State'])],axis=1).drop(['State'],axis=1)
-    data = pd.concat([data,pd.get_dummies(data['City'])],axis=1).drop(['City'],axis=1)
+    # data = pd.concat([data,pd.get_dummies(data['City'])],axis=1).drop(['City'],axis=1)
     data = pd.concat([data,pd.get_dummies(data['Make'])],axis=1).drop(['Make'],axis=1)
     data = pd.concat([data,pd.get_dummies(data['Model'])],axis=1).drop(['Model'],axis=1)
     data = data.drop(['Vin'],axis=1)
+    data = data.drop(['City'],axis=1)
     print((np.shape(data)))
 
     print("Done cleanup.")

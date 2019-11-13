@@ -28,7 +28,8 @@ def linearRegressionOneHot(data):
 	print(scores)
 
 def main():
-    data = pd.read_csv("CleanData/true_car_listings.csv")
+    # data = pd.read_csv("CleanData/true_car_listings.csv")
+    data = data_processor("RawData/true_car_listings.csv")
     linearRegressionOneHot(data)
 
 
