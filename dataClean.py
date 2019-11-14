@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 from scipy import stats
 from sklearn import preprocessing
 
+majorCities = ["newyork", "houston", "sanfrancisco", "chicago", "losangeles", "seattle", "detroit", "boston", \
+    "phoenix", "philadelphia", "sanantonio", "dallas", "denver", "jacksonville", "newark", "sandiego"]
+
 def data_processor(filename):
     """
     Process data from data file
@@ -39,7 +42,8 @@ def data_processor(filename):
     plt.show()
     # Drop City and Vin#
     data = data.drop(['Vin'],axis=1)
-    data = data.drop(['City'],axis=1)
+    #data = data.drop(['City'],axis=1)
+    data['City'] = data['City'].isin(majorCities).astype(int)
     savePath = "CleanData/" + filename.split('/')[1]
     data.to_csv(savePath, encoding='utf-8', index=False)
     print("Done cleanup.")
