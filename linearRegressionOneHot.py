@@ -21,7 +21,9 @@ def linearRegressionOneHot(filename):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.10, random_state = 1)
     model.fit(X_train, y_train)
     score = model.score(X_test, y_test)
-    print(f"The Score is {score}")
+    print(f"The Score on the test set is {score}")
+    score = model.score(X_train, y_train)
+    print(f"The Score on the train set is {score}")
     #scores = []
     # kfold = KFold(n_splits=3, shuffle=True, random_state=42)
     # for i, (train, test) in enumerate(kfold.split(X, y)):

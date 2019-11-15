@@ -48,6 +48,7 @@ def data_processor(filename):
 
 def generateOneHotDataFrame(filename):
     data = pd.read_csv(filename)
+    data = data.sample(frac=1).reset_index(drop=True)
     data = data.iloc[0:500000,:]
     data = pd.concat([data,pd.get_dummies(data['State'])],axis=1).drop(['State'],axis=1)
     data = pd.concat([data,pd.get_dummies(data['Make'])],axis=1).drop(['Make'],axis=1)
