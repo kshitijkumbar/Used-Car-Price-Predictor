@@ -31,12 +31,20 @@ def data_processor(filename):
     data['Model'] = data['Model'].str.lower()
     data['Model'] = data['Model'].str.replace(" ","")
     data['Model'] = data['Model'].str.replace("-","")
-    data.hist()
+    data.hist(bins = 100)
     plt.show()
     std_dev = 3
     data = data[(np.abs(stats.zscore(data[['Mileage','Price']])) < float(std_dev)).all(axis=1)]
-    data.hist()
+    data.hist(bins = 100)
+    
+    # data.iloc[0:450000,:].hist()
     plt.show()
+    plt.plot(data.Make,data.Price)
+    plt.show()
+    # data.iloc[450000:500000,:].hist()
+    # plt.show()
+    # data = data.iloc[0:500000,:]
+    # print(np.shape(data))
     # Drop City and Vin#
     data = data.drop(['Vin'],axis=1)
     data = data.drop(['City'],axis=1)
@@ -49,9 +57,12 @@ def data_processor(filename):
 def generateOneHotDataFrame(filename):
     data = pd.read_csv(filename)
     data = data.iloc[0:500000,:]
-    data = pd.concat([data,pd.get_dummies(data['State'])],axis=1).drop(['State'],axis=1)
-    data = pd.concat([data,pd.get_dummies(data['Make'])],axis=1).drop(['Make'],axis=1)
-    data = pd.concat([data,pd.get_dummies(data['Model'])],axis=1).drop(['Model'],axis=1)
+    data = data.sample(frac=1).reset_index(drop=True)
+
+    print((data.head()))
+    data = pd.concat([data,pd.get_dummies(data['State'],sparse = True)],axis=1).drop(['State'],axis=1)
+    data = pd.concat([data,pd.get_dummies(data['Make'],sparse = True)],axis=1).drop(['Make'],axis=1)
+    data = pd.concat([data,pd.get_dummies(data['Model'],sparse = True)],axis=1).drop(['Model'],axis=1)
     return data
 
 

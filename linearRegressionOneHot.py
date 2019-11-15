@@ -11,17 +11,22 @@ from scipy import stats
 from sklearn import preprocessing
 from sklearn.model_selection import KFold, train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 
 def linearRegressionOneHot(filename):
     data = generateOneHotDataFrame(filename)
+    # data.sample(frac=1).reset_index(drop=True)
+
     X = pd.DataFrame(data.drop(['Price'],axis=1))
     y = pd.DataFrame(data['Price'])
     # print(X.head)
-    model = LinearRegression()
+    model = RandomForestRegressor(n_estimators = 100, verbose = 1)#LinearRegression()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.10, random_state = 1)
-    model.fit(X_train, y_train)
+    model.fit(X_train, np.squeeze(y_train))
     score = model.score(X_test, y_test)
-    print(f"The Score is {score}")
+    print(f"The Test Score is {score}")
+    score = model.score(X_train, y_train)
+    print(f"The Train Score is {score}")
     #scores = []
     # kfold = KFold(n_splits=3, shuffle=True, random_state=42)
     # for i, (train, test) in enumerate(kfold.split(X, y)):
