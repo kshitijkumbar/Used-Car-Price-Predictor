@@ -45,7 +45,6 @@ def data_processor(filename):
     print("Done cleanup.")
     return
 
-
 def generateOneHotDataFrame(filename):
     data = pd.read_csv(filename)
     data = data.sample(frac=1).reset_index(drop=True)
@@ -55,9 +54,36 @@ def generateOneHotDataFrame(filename):
     data = pd.concat([data,pd.get_dummies(data['Model'])],axis=1).drop(['Model'],axis=1)
     return data
 
+def plotsForLinearity(filename):
+    data = pd.read_csv(filename,low_memory=False)
+    pd.set_option('display.max_columns', None)
+    print(f"Are any entries missing? : {data.isnull().values.any()}")
+    data['Vin'] = data['Vin'].str.lower()
+    data['City'] = data['City'].str.lower()
+    data['City'] = data['City'].str.replace(" ","")
+    data['State'] = data['State'].str.lower()
+    data['Make'] = data['Make'].str.lower()
+    data['Model'] = data['Model'].str.lower()
+    data['Model'] = data['Model'].str.replace(" ","")
+    data['Model'] = data['Model'].str.replace("-","")
+    std_dev = 3
+    data = data[(np.abs(stats.zscore(data[['Mileage','Price']])) < float(std_dev)).all(axis=1)]
+    onlyAccord = data[data['Model'].str.contains("accord")]
+    plt.scatter(onlyAccord['Year'].astype(int), onlyAccord['Price'], marker='x') 
+    plt.xlabel("Year")
+    plt.ylabel("Price")
+    plt.show()
+    plt.savefig("priceVsYear.png")
+    plt.scatter(onlyAccord['Mileage'].astype(int), onlyAccord['Price'],marker='x') 
+    plt.xlabel("Mileage")
+    plt.ylabel("Price")
+    plt.show()
+    plt.savefig("priceVsMileage.png")
+
 
 def main():
     data_processor('RawData/true_car_listings.csv')
+    #plotsForLinearity('RawData/true_car_listings.csv')
 
 if __name__ == '__main__':
     main()
