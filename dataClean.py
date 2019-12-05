@@ -49,9 +49,21 @@ def generateOneHotDataFrame(filename):
     data = pd.read_csv(filename)
     data = data.sample(frac=1).reset_index(drop=True)
     data = data.iloc[0:500000,:]
+    print(data['Make'].values)
     data = pd.concat([data,pd.get_dummies(data['State'])],axis=1).drop(['State'],axis=1)
     data = pd.concat([data,pd.get_dummies(data['Make'])],axis=1).drop(['Make'],axis=1)
+    data = data.rename(columns={"genesis": "gens", "land": "lr", "ram": "dram"})
+    print(data["gens"])
+
     data = pd.concat([data,pd.get_dummies(data['Model'])],axis=1).drop(['Model'],axis=1)
+    unique = []
+    for value in (data.columns.values):
+        if value in unique:
+            print (value)
+        else:
+            unique.append(value)
+
+    print(len(set(data.columns.values)))
     return data
 
 def plotsForLinearity(filename):
