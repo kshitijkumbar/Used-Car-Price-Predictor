@@ -11,14 +11,17 @@ from scipy import stats
 from sklearn import preprocessing
 from sklearn.model_selection import KFold, train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import BaggingRegressor
+from xgboost import XGBRegressor
 
 def linearRegressionOneHot(filename):
     data = generateOneHotDataFrame(filename)
     X = pd.DataFrame(data.drop(['Price'],axis=1))
     y = pd.DataFrame(data['Price'])
     # print(X.head)
-    model = LinearRegression()
+    model = #BaggingRegressor(base_estimator=XGBRegressor()) #XGBRegressor(max_depth = 2,n_estimators=10)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.10, random_state = 1)
+    print("Now fitting")
     model.fit(X_train, y_train)
     score = model.score(X_test, y_test)
     print(f"The Score on the test set is {score}")
