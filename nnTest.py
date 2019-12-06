@@ -20,11 +20,11 @@ from keras.wrappers.scikit_learn import KerasRegressor
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 # load dataset
-
+SHAPE = 0
 def baseline_model():
     # create model
     model = Sequential()
-    model.add(Dense(13, input_dim=13, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(SHAPE, input_dim=SHAPE, kernel_initializer='normal', activation='relu'))
     model.add(Dense(1, kernel_initializer='normal'))
     # Compile model
     model.compile(loss='mean_squared_error', optimizer='adam')
@@ -36,6 +36,7 @@ def linearRegressionOneHot(filename):
     data = generateOneHotDataFrame(filename)
     X = pd.DataFrame(data.drop(['Price'],axis=1))
     y = pd.DataFrame(data['Price'])
+    SHAPE = len((data.columns.values))
     # print(X.head)
     # model =    XGBRegressor(verbosity = 1)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.10, random_state = 1)
