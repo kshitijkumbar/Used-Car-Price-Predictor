@@ -28,7 +28,7 @@ def baseline_model(SHAPE):
         print(f"{SHAPE}")
         model.add(Dense(SHAPE, input_dim=SHAPE, kernel_initializer='normal', activation='relu'))
         model.add(Dense(10, kernel_initializer='normal', activation='relu'))
-        model.add(Dense(10, kernel_initializer='normal', activation='relu'))
+        # model.add(Dense(10, kernel_initializer='normal', activation='relu'))
         model.add(Dense(1, kernel_initializer='normal'))
         
         # Compile model
