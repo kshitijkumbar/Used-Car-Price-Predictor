@@ -21,15 +21,20 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 # load dataset
 SHAPE = 0
-def baseline_model():
+def baseline_model(SHAPE):
     # create model
-    model = Sequential()
-    print(SHAPE)
-    model.add(Dense(SHAPE, input_dim=SHAPE, kernel_initializer='normal', activation='relu'))
-    model.add(Dense(1, kernel_initializer='normal'))
-    # Compile model
-    model.compile(loss='mean_squared_error', optimizer='adam')
-    return model
+    def bm():
+        model = Sequential()
+        print(f"{SHAPE}")
+        model.add(Dense(SHAPE, input_dim=SHAPE, kernel_initializer='normal', activation='relu'))
+        model.add(Dense(10, kernel_initializer='normal', activation='relu'))
+        model.add(Dense(10, kernel_initializer='normal', activation='relu'))
+        model.add(Dense(1, kernel_initializer='normal'))
+        
+        # Compile model
+        model.compile(loss='mean_squared_error', optimizer='adam')
+        return model
+    return bm
     # evaluate model
 
 
@@ -37,12 +42,14 @@ def linearRegressionOneHot(filename):
     data = generateOneHotDataFrame(filename)
     X = pd.DataFrame(data.drop(['Price'],axis=1))
     y = pd.DataFrame(data['Price'])
-    SHAPE = len((data.columns.values))
+    SHAPE = (np.shape(X)[1])
+    print(SHAPE)
     # print(X.head)
     # model =    XGBRegressor(verbosity = 1)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.10, random_state = 1)
     print("Now fitting")
-    model = KerasRegressor(build_fn=baseline_model, epochs=100, batch_size=5, verbose=0)
+    print(np.shape(X_train)[1])
+    model = KerasRegressor(build_fn=baseline_model(SHAPE), epochs=100, batch_size=5, verbose=0)
 
     # kfold = KFold(n_splits=10)
     # results = cross_val_score(estimator, X, Y, cv=kfold)
