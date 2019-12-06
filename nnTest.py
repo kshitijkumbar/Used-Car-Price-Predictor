@@ -24,6 +24,7 @@ SHAPE = 0
 def baseline_model():
     # create model
     model = Sequential()
+    print(SHAPE)
     model.add(Dense(SHAPE, input_dim=SHAPE, kernel_initializer='normal', activation='relu'))
     model.add(Dense(1, kernel_initializer='normal'))
     # Compile model
@@ -47,9 +48,10 @@ def linearRegressionOneHot(filename):
     # results = cross_val_score(estimator, X, Y, cv=kfold)
     # print("Baseline: %.2f (%.2f) MSE" % (results.mean(), results.std()))
     model.fit(X_train, y_train)
-    score = model.score(X_test, y_test)
-    print(f"The Score on the test set is {score}")
-    score = model.score(X_train, y_train)
+    results = cross_val_score(model, X_train, y_train, scoring='r2')
+    # score = model.score(X_test, y_test)
+    print(f"The Score on the test set is {results}")
+    score = cross_val_score(model, X_test, y_test, scoring='r2')
     print(f"The Score on the train set is {score}")
     #scores = []
     # kfold = KFold(n_splits=3, shuffle=True, random_state=42)
