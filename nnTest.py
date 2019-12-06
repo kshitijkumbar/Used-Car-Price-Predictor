@@ -47,7 +47,7 @@ def linearRegressionOneHot(filename):
     # kfold = KFold(n_splits=10)
     # results = cross_val_score(estimator, X, Y, cv=kfold)
     # print("Baseline: %.2f (%.2f) MSE" % (results.mean(), results.std()))
-    model.fit(X_train, y_train)
+    # model.fit(X_train, y_train)
     results = cross_val_score(model, X_train, y_train, scoring='r2')
     # score = model.score(X_test, y_test)
     print(f"The Score on the test set is {results}")
