@@ -28,7 +28,7 @@ def kmeans(filename):
         totalSamples = 0
         weightedScores = 0
         print("---------------------------------------------")
-        for clusterNumber in range(NUM_CLUSTERS):
+        for clusterNumber in range(3, NUM_CLUSTERS + 1):
             dataForThisCluster = data[(data['ClusterNumber'] == clusterNumber)]
             numSamplesInCluster = len(dataForThisCluster.index)
             X_c = pd.DataFrame(dataForThisCluster.drop(['Price'],axis=1))

@@ -22,7 +22,7 @@ def data_processor(filename):
     """
     data = pd.read_csv(filename,low_memory=False)
     pd.set_option('display.max_columns', None)
-    print(f"Are any entries missing? : {data.isnull().values.any()}")
+    #print(f"Are any entries missing? : {data.isnull().values.any()}")
     data['Vin'] = data['Vin'].str.lower()
     data['City'] = data['City'].str.lower()
     data['City'] = data['City'].str.replace(" ","")
@@ -57,7 +57,7 @@ def generateOneHotDataFrame(filename):
 def plotsForLinearity(filename):
     data = pd.read_csv(filename,low_memory=False)
     pd.set_option('display.max_columns', None)
-    print(f"Are any entries missing? : {data.isnull().values.any()}")
+    #print(f"Are any entries missing? : {data.isnull().values.any()}")
     data['Vin'] = data['Vin'].str.lower()
     data['City'] = data['City'].str.lower()
     data['City'] = data['City'].str.replace(" ","")
