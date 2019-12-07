@@ -19,7 +19,7 @@ def kmeans(filename):
     data = generateOneHotDataFrame(filename)
     X = pd.DataFrame(data.drop(['Price'],axis=1))
     y = pd.DataFrame(data['Price'])
-    X_train, _, _, _ = train_test_split(X, y, test_size = 0.10, random_state = 1)
+    X_train, _, _, _ = train_test_split(X, y, test_size = 0.10, random_state = 0)
     for NUM_CLUSTERS in range(3, MAX_NUM_CLUSTERS + 1):
         kmeans = MiniBatchKMeans(n_clusters = NUM_CLUSTERS , random_state = 0)
         kmeans.fit(X_train)
@@ -30,10 +30,11 @@ def kmeans(filename):
         print("---------------------------------------------")
         for clusterNumber in range(NUM_CLUSTERS):
             dataForThisCluster = data[(data['ClusterNumber'] == clusterNumber)]
+            dataForThisCluster.drop(['ClusterNumber'],axis=1)
             numSamplesInCluster = len(dataForThisCluster.index)
             X_c = pd.DataFrame(dataForThisCluster.drop(['Price'],axis=1))
             y_c = pd.DataFrame(dataForThisCluster['Price'])
-            X_train_c, X_test_c, y_train_c, y_test_c = train_test_split(X_c, y_c, test_size = 0.10, random_state = 1)
+            X_train_c, X_test_c, y_train_c, y_test_c = train_test_split(X_c, y_c, test_size = 0.10, random_state = 0)
             model = LinearRegression()
             model.fit(X_train_c, y_train_c)
             score = model.score(X_test_c, y_test_c)
