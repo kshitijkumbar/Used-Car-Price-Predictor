@@ -20,7 +20,7 @@ def kmeans(filename):
     X = pd.DataFrame(data.drop(['Price'],axis=1))
     y = pd.DataFrame(data['Price'])
     X_train, _, _, _ = train_test_split(X, y, test_size = 0.10, random_state = 1)
-    for NUM_CLUSTERS in range(MAX_NUM_CLUSTERS):
+    for NUM_CLUSTERS in range(3, MAX_NUM_CLUSTERS + 1):
         kmeans = MiniBatchKMeans(n_clusters = NUM_CLUSTERS , random_state = 0)
         kmeans.fit(X_train)
         carClusterNumber = kmeans.predict(X)
@@ -28,7 +28,7 @@ def kmeans(filename):
         totalSamples = 0
         weightedScores = 0
         print("---------------------------------------------")
-        for clusterNumber in range(3, NUM_CLUSTERS + 1):
+        for clusterNumber in range(NUM_CLUSTERS):
             dataForThisCluster = data[(data['ClusterNumber'] == clusterNumber)]
             numSamplesInCluster = len(dataForThisCluster.index)
             X_c = pd.DataFrame(dataForThisCluster.drop(['Price'],axis=1))
