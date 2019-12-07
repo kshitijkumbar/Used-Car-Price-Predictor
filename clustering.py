@@ -13,29 +13,41 @@ from sklearn.model_selection import KFold, train_test_split
 from sklearn.cluster import KMeans, MiniBatchKMeans
 from sklearn.linear_model import LinearRegression
 
-NUM_CLUSTERS = 6
+MAX_NUM_CLUSTERS = 10
 
 def kmeans(filename):
     data = generateOneHotDataFrame(filename)
     X = pd.DataFrame(data.drop(['Price'],axis=1))
     y = pd.DataFrame(data['Price'])
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.10, random_state = 1)
-    kmeans = MiniBatchKMeans(n_clusters = NUM_CLUSTERS , random_state = 0)
-    kmeans.fit(X_train)
-    carClusterNumber = kmeans.predict(X)
-    data['ClusterNumber'] = carClusterNumber
-    
-    for clusterNumber in range(NUM_CLUSTERS):
-        dataForThisCluster = (data['ClusterNumber'] == clusterNumber)
-        X_c = pd.DataFrame(dataForThisCluster.drop(['Price'],axis=1))
-        y_c = pd.DataFrame(dataForThisCluster['Price'])
-        X_train_c, X_test_c, y_train_c, y_test_c = train_test_split(X_c, y_c, test_size = 0.10, random_state = 1)
-        model = LinearRegression()
-        model.fit(X_train_c, y_train_c)
-        score = model.score(X_test_c, y_test_c)
-        print(f"The Score on the test set is {score}")
-        score = model.score(X_train_c, y_train_c)
-        print(f"The Score on the train set is {score}")
+    X_train, _, _, _ = train_test_split(X, y, test_size = 0.10, random_state = 1)
+    for NUM_CLUSTERS in range(MAX_NUM_CLUSTERS):
+        kmeans = MiniBatchKMeans(n_clusters = NUM_CLUSTERS , random_state = 0)
+        kmeans.fit(X_train)
+        carClusterNumber = kmeans.predict(X)
+        data['ClusterNumber'] = carClusterNumber
+        totalSamples = 0
+        weightedScores = 0
+        print("---------------------------------------------")
+        for clusterNumber in range(NUM_CLUSTERS):
+            dataForThisCluster = data[(data['ClusterNumber'] == clusterNumber)]
+            numSamplesInCluster = len(dataForThisCluster.index)
+            X_c = pd.DataFrame(dataForThisCluster.drop(['Price'],axis=1))
+            y_c = pd.DataFrame(dataForThisCluster['Price'])
+            X_train_c, X_test_c, y_train_c, y_test_c = train_test_split(X_c, y_c, test_size = 0.10, random_state = 1)
+            model = LinearRegression()
+            model.fit(X_train_c, y_train_c)
+            score = model.score(X_test_c, y_test_c)
+            print("The Score on the test set is {}".format(score))
+            if ((score < 1.0) and (score > 0.6)):
+                weightedScores += numSamplesInCluster*score
+                totalSamples += numSamplesInCluster
+            else:
+                print("Problem with cluster number {} for total clusters of {}".format(clusterNumber, NUM_CLUSTERS))
+            score = model.score(X_train_c, y_train_c)
+            print("The Score on the train set is {}".format(score))
+        pass
+        print("Weighted score for {} clusters is {}".format(NUM_CLUSTERS, weightedScores/totalSamples))
+        print("---------------------------------------------")
     pass
         
     
