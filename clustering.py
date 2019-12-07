@@ -30,7 +30,7 @@ def kmeans(filename):
         print("---------------------------------------------")
         for clusterNumber in range(NUM_CLUSTERS):
             dataForThisCluster = data[(data['ClusterNumber'] == clusterNumber)]
-            dataForThisCluster.drop(['ClusterNumber'],axis=1)
+            dataForThisCluster = pd.DataFrame(dataForThisCluster.drop(['ClusterNumber'],axis=1))
             numSamplesInCluster = len(dataForThisCluster.index)
             X_c = pd.DataFrame(dataForThisCluster.drop(['Price'],axis=1))
             y_c = pd.DataFrame(dataForThisCluster['Price'])
