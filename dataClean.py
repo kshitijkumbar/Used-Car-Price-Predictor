@@ -31,11 +31,17 @@ def data_processor(filename):
     data['Model'] = data['Model'].str.lower()
     data['Model'] = data['Model'].str.replace(" ","")
     data['Model'] = data['Model'].str.replace("-","")
-    data.hist()
+#     fig, axs = plt.subplots(1, 3, sharey=True, tight_layout=True)
+#     n_bins = 100
+# # We can set the number of bins with the `bins` kwarg
+#     axs[0].hist(data['Mileage'], bins=n_bins)
+#     axs[1].hist(data['Price'], bins=n_bins)
+#     axs[2].hist(data['Year'], bins=n_bins)
+    data.hist(bins =100,layout=(2,3),sharey = True)
     plt.show()
     std_dev = 3
     data = data[(np.abs(stats.zscore(data[['Mileage','Price']])) < float(std_dev)).all(axis=1)]
-    data.hist()
+    data.hist(bins =100,layout=(2,3))
     plt.show()
     # Drop City and Vin#
     data = data.drop(['Vin'],axis=1)
