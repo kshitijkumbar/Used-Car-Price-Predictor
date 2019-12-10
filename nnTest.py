@@ -51,7 +51,7 @@ def linearRegressionOneHot(filename):
     print("Now fitting")
     print(np.shape(X_train)[1])
     model = lgb.LGBMRegressor()
-    model.fit(X_train, y_train,categorical_feature = 3,4,5 , verbose = True)
+    model.fit(X_train, y_train,categorical_feature = [3,4,5] , verbose = 1)
     score = model.score(X_test, y_test)
     print(f"The Score on the test set is {score}")
     score = model.score(X_train, y_train)
