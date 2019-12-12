@@ -20,7 +20,7 @@ def rfRegressionOneHot(filename):
     X = pd.DataFrame(data.drop(['Price'],axis=1))
     y = pd.DataFrame(data['Price'])
     # print(X.head)
-    model = RandomForestRegressor(n_estimators = 100, verbose = 1)#LinearRegression()
+    model = RandomForestRegressor(n_estimators = 100, verbose = 2,n_jobs=-1,max_depth=48)#LinearRegression()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.10, random_state = 1)
     model.fit(X_train, np.squeeze(y_train))
     score = model.score(X_test, y_test)

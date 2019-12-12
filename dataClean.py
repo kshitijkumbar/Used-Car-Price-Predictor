@@ -56,7 +56,7 @@ def data_processor(filename):
 
 def generateOneHotDataFrame(filename):
     data = pd.read_csv(filename)
-    data = data.iloc[0:500000,:]
+    data = data.iloc[0:700000,:]
     data = data.sample(frac=1).reset_index(drop=True)
 
     print((data.head()))
