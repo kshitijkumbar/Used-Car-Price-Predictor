@@ -75,21 +75,21 @@ def plotsForLinearity(filename):
     std_dev = 3
     data = data[(np.abs(stats.zscore(data[['Mileage','Price']])) < float(std_dev)).all(axis=1)]
     onlyAccord = data[data['Model'].str.contains("accord")]
+    plt.figure()
     plt.scatter(onlyAccord['Year'].astype(int), onlyAccord['Price'], marker='x') 
     plt.xlabel("Year")
     plt.ylabel("Price")
-    plt.show()
     plt.savefig("priceVsYear.png")
+    plt.figure()
     plt.scatter(onlyAccord['Mileage'].astype(int), onlyAccord['Price'],marker='x') 
     plt.xlabel("Mileage")
     plt.ylabel("Price")
-    plt.show()
     plt.savefig("priceVsMileage.png")
 
 
 def main():
-    data_processor('RawData/true_car_listings.csv')
-    #plotsForLinearity('RawData/true_car_listings.csv')
+    #data_processor('RawData/true_car_listings.csv')
+    plotsForLinearity('RawData/true_car_listings.csv')
 
 if __name__ == '__main__':
     main()
